@@ -6,10 +6,11 @@ class ListTransactionConsumer extends ConsumerWidget with CustomMixin {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final transactionAsyncValue = ref.watch(listDatatransactionProvider);
-    return widgetTransaction(transactionAsyncValue);
+    return widgetTransaction(ref, transactionAsyncValue);
   }
 
   Widget widgetTransaction(
+    WidgetRef ref,
     AsyncValue<List<DataTransaction>> transactionAsyncValue,
   ) {
     return transactionAsyncValue.when(
@@ -20,14 +21,20 @@ class ListTransactionConsumer extends ConsumerWidget with CustomMixin {
           );
         } else {
           return Expanded(
-            child: Container(),
+            child: widgetNoData(),
           );
         }
       },
       loading: () => Expanded(
         child: widgetLoading(),
       ),
-      error: (err, stack) => Text('Error: $err'),
+      error: (err, stack) => Expanded(
+        child: widgetError(
+          onTap: () {
+            ref.refresh(listDatatransactionProvider);
+          },
+        ),
+      ),
     );
   }
 
@@ -149,6 +156,75 @@ class ListTransactionConsumer extends ConsumerWidget with CustomMixin {
       },
       itemCount: 10,
       separatorBuilder: (context, index) => const SizedBox(height: 10),
+    );
+  }
+
+  Widget widgetNoData() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Spacer(),
+          Container(
+            height: 100,
+            width: 100,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                image: AssetImage('assets/images/nodata.png'),
+              ),
+            ),
+          ),
+          const SizedBox(height: 4),
+          const Text(
+            'Tidak ada histori pendapatan/pengeluaran',
+            style: CustomFont.blackFont12,
+          ),
+          const Spacer(flex: 2),
+        ],
+      ),
+    );
+  }
+
+  Widget widgetError({required VoidCallback onTap}) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Spacer(),
+          Container(
+            height: 100,
+            width: 100,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                image: AssetImage('assets/images/error.png'),
+              ),
+            ),
+          ),
+          const SizedBox(height: 4),
+          const Text(
+            'Terjadi kesalahan server',
+            style: CustomFont.blackFont12,
+          ),
+          const SizedBox(height: 12),
+          CustomButton(
+            onTap: onTap,
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8),
+            child: const Text(
+              'Coba lagi',
+              style: CustomFont.whiteFont12Semi,
+            ),
+          ),
+          const Spacer(flex: 2),
+        ],
+      ),
     );
   }
 }

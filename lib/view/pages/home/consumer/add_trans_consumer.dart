@@ -8,9 +8,9 @@ class AddTransactionConsumer extends ConsumerWidget {
     required this.notes,
     required this.formkey,
   });
-  final String amount;
+  final TextEditingController amount;
   final String type;
-  final String notes;
+  final TextEditingController notes;
   final GlobalKey<FormState> formkey;
 
   @override
@@ -20,9 +20,9 @@ class AddTransactionConsumer extends ConsumerWidget {
         if (formkey.currentState!.validate()) {
           String typeConv = type == "Pendapatan" ? 'income' : 'expense';
           Map<String, dynamic> data = {
-            'amount': amount,
+            'amount': amount.text,
             'type': typeConv,
-            'category': notes,
+            'category': notes.text,
           };
           ref.read(transactionProvider.notifier).createTransaction(ref, data);
         }

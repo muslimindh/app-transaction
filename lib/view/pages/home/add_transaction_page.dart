@@ -74,9 +74,9 @@ class _AddTransactionPageState extends State<AddTransactionPage>
               const SizedBox(height: 10),
               AddTransactionConsumer(
                 formkey: formKey,
-                amount: amountController.text,
+                amount: amountController,
                 type: selectedItem,
-                notes: notesController.text,
+                notes: notesController,
               ),
             ],
           ),
