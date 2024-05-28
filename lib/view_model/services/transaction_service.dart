@@ -1,27 +1,25 @@
 part of '../viewmodels.dart';
 
-String baseURL = 'https://test-muslimin.bintangmfhd.com';
+BaseNetwork net = BaseNetwork();
 
 final createTransactionProvider =
-    FutureProvider.family<void, DataTransaction>((ref, transactionData) async {
+    FutureProvider.family<AsyncValue<void>, Map<String, dynamic>>(
+        (ref, transactionData) async {
   try {
-    final response = await http.post(
-      Uri.parse('$baseURL/transactions/create'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, dynamic>{
-        'amount': transactionData.amount,
-        'type': transactionData.type,
-        'note': transactionData.category,
-      }),
+    var form = FormData.fromMap(transactionData);
+    final Response resp = await net.request(
+      '/transactions/create',
+      requestMethod: 'post',
+      data: form,
+      queryParameter: {'_method': 'post'},
     );
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+    if (resp.statusCode == 200) {
+      return const AsyncData<void>(null);
     } else {
-      throw Exception('Terjadi kesalahan server [${response.statusCode}]');
+      throw Exception('Terjadi kesalahan server [${resp.statusCode}]');
     }
   } catch (e) {
+    debugPrint('$e');
     throw Exception('Terjadi kesalahan server');
   }
 });

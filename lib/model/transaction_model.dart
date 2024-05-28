@@ -8,11 +8,11 @@ class DataTransaction {
   final int? id;
 
   DataTransaction({
-    required this.amount,
-    required this.type,
-    required this.category,
-    required this.createdAt,
-    required this.id,
+    this.amount,
+    this.type,
+    this.category,
+    this.createdAt,
+    this.id,
   });
 
   factory DataTransaction.fromJson(Map<String, dynamic> json) =>
