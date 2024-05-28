@@ -16,6 +16,8 @@ class HomePage extends StatelessWidget with CustomMixin {
             const ListTransactionConsumer(),
           ],
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: const FloatingButtonConsumer(),
       ),
     );
   }

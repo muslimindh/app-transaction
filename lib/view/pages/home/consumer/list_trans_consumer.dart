@@ -20,14 +20,13 @@ class ListTransactionConsumer extends ConsumerWidget with CustomMixin {
           );
         } else {
           return Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: const Text('no data'),
-            ),
+            child: widgetLoading(),
           );
         }
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => Expanded(
+        child: widgetLoading(),
+      ),
       error: (err, stack) => Text('Error: $err'),
     );
   }
@@ -40,7 +39,15 @@ class ListTransactionConsumer extends ConsumerWidget with CustomMixin {
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () {
-            Get.to(() => const DetailTransactionPage());
+            Get.to(
+              () => DetailTransactionPage(
+                id: transactions[index].id!,
+                amount: transactions[index].amount ?? 0,
+                date: transactions[index].parseDate(),
+                notes: transactions[index].category,
+                type: transactions[index].type,
+              ),
+            );
           },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10),
@@ -103,6 +110,44 @@ class ListTransactionConsumer extends ConsumerWidget with CustomMixin {
         );
       },
       itemCount: transactions.length,
+      separatorBuilder: (context, index) => const SizedBox(height: 10),
+    );
+  }
+
+  Widget widgetLoading() {
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: const BouncingScrollPhysics(),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6),
+      itemBuilder: (context, index) {
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10),
+          decoration: themeDecoration(),
+          child: const ShimmerLoading(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Skelton(height: 20),
+                      SizedBox(height: 2),
+                      Skelton(height: 20),
+                    ],
+                  ),
+                ),
+                Spacer(),
+                Flexible(
+                  child: Skelton(height: 26),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+      itemCount: 10,
       separatorBuilder: (context, index) => const SizedBox(height: 10),
     );
   }

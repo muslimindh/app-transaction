@@ -28,7 +28,7 @@ class DataTransaction {
     DateTime parseDate =
         DateFormat("yyyy-MM-DDTHH:mm:ss.SSSSSSZ").parse(createdAt!);
     var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('dd MMM yyyy HH:mm', 'in');
+    var outputFormat = DateFormat('dd MMM yyyy - HH:mm', 'in');
     var outputDate = outputFormat.format(inputDate);
     return outputDate;
   }

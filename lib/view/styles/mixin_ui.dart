@@ -1,9 +1,9 @@
 part of '../views.dart';
 
 mixin CustomMixin {
-  BoxDecoration themeDecoration() {
+  BoxDecoration themeDecoration({Color? color}) {
     return BoxDecoration(
-      color: Colors.white,
+      color: color ?? Colors.white,
       borderRadius: BorderRadius.circular(10),
       boxShadow: [
         BoxShadow(

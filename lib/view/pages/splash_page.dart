@@ -26,7 +26,7 @@ class _SplashPageState extends State<SplashPage>
 
     if (seenDialog) {
       Timer(const Duration(seconds: 4), () {
-        Get.off(() => const AddTransactionPage());
+        Get.off(() => const HomePage());
       });
     } else {
       await prefs.setBool('seen', true);

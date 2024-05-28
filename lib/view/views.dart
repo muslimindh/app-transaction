@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 import '../model/transaction_model.dart';
 import '../view_model/viewmodels.dart';
 import 'package:http/http.dart' as http;
@@ -27,7 +28,10 @@ part 'pages/home/add_transaction_page.dart';
 part 'pages/home/detail_transaction_page.dart';
 part 'pages/home/consumer/add_trans_consumer.dart';
 part 'pages/home/consumer/list_trans_consumer.dart';
+part 'pages/home/consumer/button_add_trans_consumer.dart';
 
 part 'widgets/custom_button.dart';
 part 'widgets/custom_form_field.dart';
 part 'widgets/custom_dropdown.dart';
+part 'widgets/shimmering.dart';
+part 'widgets/skelton.dart';

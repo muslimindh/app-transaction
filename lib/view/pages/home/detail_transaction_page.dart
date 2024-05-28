@@ -1,7 +1,19 @@
 part of '../../views.dart';
 
 class DetailTransactionPage extends StatelessWidget with CustomMixin {
-  const DetailTransactionPage({super.key});
+  const DetailTransactionPage({
+    super.key,
+    required this.id,
+    this.amount,
+    this.notes,
+    this.date,
+    this.type,
+  });
+  final int id;
+  final String? type;
+  final int? amount;
+  final String? notes;
+  final String? date;
 
   @override
   Widget build(BuildContext context) {
@@ -31,19 +43,35 @@ class DetailTransactionPage extends StatelessWidget with CustomMixin {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Flexible(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: CustomColor.theme,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: const Text(
-                    'Pendapatan',
-                    style: CustomFont.whiteFont10,
+              if (type == "income") ...[
+                Flexible(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: CustomColor.theme,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: const Text(
+                      'Pendapatan',
+                      style: CustomFont.whiteFont10,
+                    ),
                   ),
                 ),
-              ),
+              ] else ...[
+                Flexible(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: CustomColor.red,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: const Text(
+                      'Pengeluaran',
+                      style: CustomFont.whiteFont10,
+                    ),
+                  ),
+                ),
+              ],
               const Expanded(
                 child: Text(
                   '2 jam yang lalu',
@@ -59,8 +87,10 @@ class DetailTransactionPage extends StatelessWidget with CustomMixin {
             style: CustomFont.greyFont10,
           ),
           const SizedBox(height: 2),
-          const Text(
-            'Rp. 10.000',
+          Text(
+            Utility.instance.moneyFormat.format(
+              amount,
+            ),
             style: CustomFont.blackFont12,
           ),
           const SizedBox(height: 8),
@@ -69,8 +99,8 @@ class DetailTransactionPage extends StatelessWidget with CustomMixin {
             style: CustomFont.greyFont10,
           ),
           const SizedBox(height: 2),
-          const Text(
-            'Uang Makan',
+          Text(
+            notes ?? '-',
             style: CustomFont.blackFont12,
           ),
           const SizedBox(height: 8),
@@ -79,8 +109,8 @@ class DetailTransactionPage extends StatelessWidget with CustomMixin {
             style: CustomFont.greyFont10,
           ),
           const SizedBox(height: 2),
-          const Text(
-            '01 November 2024',
+          Text(
+            '$date',
             style: CustomFont.blackFont12,
           ),
         ],
@@ -91,20 +121,6 @@ class DetailTransactionPage extends StatelessWidget with CustomMixin {
   Widget widgetButton() {
     return Column(
       children: [
-        CustomButton(
-          backgroundColor: Colors.white,
-          borderSide: const BorderSide(
-            color: CustomColor.warning,
-          ),
-          onTap: () {},
-          child: const Center(
-            child: Text(
-              'Edit Transaksi',
-              style: CustomFont.yellowFont12Semi,
-            ),
-          ),
-        ),
-        const SizedBox(height: 10),
         CustomButton(
           backgroundColor: CustomColor.red.withOpacity(0.8),
           onTap: () {},

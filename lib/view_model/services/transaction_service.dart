@@ -27,11 +27,10 @@ final createTransactionProvider =
 final listDatatransactionProvider =
     FutureProvider<List<DataTransaction>>((ref) async {
   try {
-    final response = await http.get(Uri.parse('$baseURL/transactions/all'));
-    if (response.statusCode == 200) {
-      final responseBody = jsonDecode(response.body);
-      if (responseBody['success']) {
-        final List<dynamic> transactionsJson = responseBody['data'];
+    final Response resp = await net.request('/transactions/all');
+    if (resp.statusCode == 200) {
+      if (resp.data['success']) {
+        final List<dynamic> transactionsJson = resp.data['data'];
         if (transactionsJson.isEmpty) {
           return [];
         } else {
@@ -45,7 +44,7 @@ final listDatatransactionProvider =
         return [];
       }
     } else {
-      throw Exception('Terjadi kesalahan server [${response.statusCode}]');
+      throw Exception('Terjadi kesalahan server [${resp.statusCode}]');
     }
   } catch (e) {
     throw Exception('Terjadi kesalahan server');
