@@ -50,3 +50,21 @@ final listDatatransactionProvider =
     throw Exception('Terjadi kesalahan server');
   }
 });
+
+final deleteTransactionProvider =
+    FutureProvider.family<AsyncValue<void>, int>((ref, transactionData) async {
+  try {
+    final Response resp = await net.request(
+      '/transactions/delete/$transactionData',
+      requestMethod: 'delete',
+    );
+    if (resp.statusCode == 200) {
+      return const AsyncData<void>(null);
+    } else {
+      throw Exception('Terjadi kesalahan server [${resp.statusCode}]');
+    }
+  } catch (e) {
+    debugPrint('$e');
+    throw Exception('Terjadi kesalahan server');
+  }
+});

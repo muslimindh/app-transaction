@@ -29,6 +29,7 @@ part 'pages/home/detail_transaction_page.dart';
 part 'pages/home/consumer/add_trans_consumer.dart';
 part 'pages/home/consumer/list_trans_consumer.dart';
 part 'pages/home/consumer/button_add_trans_consumer.dart';
+part 'pages/home/consumer/delete_trans_consumer.dart';
 
 part 'widgets/custom_button.dart';
 part 'widgets/custom_form_field.dart';

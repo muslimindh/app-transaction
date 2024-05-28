@@ -29,4 +29,16 @@ class TransactionViewModel extends StateNotifier {
       },
     );
   }
+
+  void deleteTransaction(WidgetRef ref, int dataTransaction) {
+    ref.read(deleteTransactionProvider(dataTransaction).future).then(
+      (result) {
+        state = 'success';
+        debugPrint('$state');
+      },
+      onError: (error) {
+        state = '$error';
+      },
+    );
+  }
 }

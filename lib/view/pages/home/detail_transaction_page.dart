@@ -26,7 +26,7 @@ class DetailTransactionPage extends StatelessWidget with CustomMixin {
           children: [
             widgetCard(),
             const SizedBox(height: 10),
-            widgetButton(),
+            DeleteTransactionConsumer(id),
           ],
         ),
       ),
@@ -115,23 +115,6 @@ class DetailTransactionPage extends StatelessWidget with CustomMixin {
           ),
         ],
       ),
-    );
-  }
-
-  Widget widgetButton() {
-    return Column(
-      children: [
-        CustomButton(
-          backgroundColor: CustomColor.red.withOpacity(0.8),
-          onTap: () {},
-          child: const Center(
-            child: Text(
-              'Hapus Transaksi',
-              style: CustomFont.whiteFont12Semi,
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
