@@ -1,15 +1,11 @@
 part of '../../views.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerWidget with CustomMixin {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> with CustomMixin {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final transactionAsyncValue = ref.watch(listDatatransactionProvider);
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -18,9 +14,7 @@ class _HomePageState extends State<HomePage> with CustomMixin {
             widgetHeader(),
             widgetText(),
             const SizedBox(height: 2),
-            Expanded(
-              child: widgetListCard(),
-            ),
+            widgetTransaction(transactionAsyncValue),
           ],
         ),
       ),
@@ -73,7 +67,30 @@ class _HomePageState extends State<HomePage> with CustomMixin {
     );
   }
 
-  Widget widgetListCard() {
+  Widget widgetTransaction(
+    AsyncValue<List<DataTransaction>> transactionAsyncValue,
+  ) {
+    return transactionAsyncValue.when(
+      data: (transactions) {
+        if (transactions.isNotEmpty) {
+          return Expanded(
+            child: widgetListCard(transactions),
+          );
+        } else {
+          return Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: const Text('no data'),
+            ),
+          );
+        }
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, stack) => Text('Error: $err'),
+    );
+  }
+
+  Widget widgetListCard(List<DataTransaction> transactions) {
     return ListView.separated(
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
@@ -89,41 +106,61 @@ class _HomePageState extends State<HomePage> with CustomMixin {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '01 Nov 2024 - 19.00',
+                        transactions[index].parseDate(),
                         style: CustomFont.greyFont10,
                       ),
-                      SizedBox(height: 2),
+                      const SizedBox(height: 2),
                       Text(
-                        'Rp. 20.000',
+                        Utility.instance.moneyFormat.format(
+                          transactions[index].amount!,
+                        ),
                         style: CustomFont.blackFont12,
                       ),
                     ],
                   ),
                 ),
-                Flexible(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: CustomColor.theme,
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: const Text(
-                      'Pendapatan',
-                      style: CustomFont.whiteFont10,
+                if (transactions[index].type == "income") ...[
+                  Flexible(
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 4.w, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: CustomColor.theme,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: const Text(
+                        'Pendapatan',
+                        style: CustomFont.whiteFont10,
+                      ),
                     ),
                   ),
-                ),
+                ] else ...[
+                  Flexible(
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 4.w, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: CustomColor.red,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: const Text(
+                        'Pengeluaran',
+                        style: CustomFont.whiteFont10,
+                      ),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
         );
       },
-      itemCount: 20,
+      itemCount: transactions.length,
       separatorBuilder: (context, index) => const SizedBox(height: 10),
     );
   }

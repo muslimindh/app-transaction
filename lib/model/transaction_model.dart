@@ -1,18 +1,35 @@
+import 'package:intl/intl.dart';
+
 class DataTransaction {
-  final String? id;
   final int? amount;
-  final DateTime? date;
+  final String? type;
+  final String? category;
+  final String? createdAt;
+  final int? id;
 
   DataTransaction({
-    this.id,
-    this.amount,
-    this.date,
+    required this.amount,
+    required this.type,
+    required this.category,
+    required this.createdAt,
+    required this.id,
   });
 
   factory DataTransaction.fromJson(Map<String, dynamic> json) =>
       DataTransaction(
-        id: json["id"],
         amount: json["amount"],
-        date: json["date"] != null ? DateTime.parse(json["date"]) : null,
+        type: json["type"],
+        category: json["category"],
+        createdAt: json["created_at"],
+        id: json["id"],
       );
+
+  String parseDate() {
+    DateTime parseDate =
+        DateFormat("yyyy-MM-DDTHH:mm:ss.SSSSSSZ").parse(createdAt!);
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat('dd MMM yyyy HH:mm', 'in');
+    var outputDate = outputFormat.format(inputDate);
+    return outputDate;
+  }
 }
