@@ -20,7 +20,7 @@ class ListTransactionConsumer extends ConsumerWidget with CustomMixin {
           );
         } else {
           return Expanded(
-            child: widgetLoading(),
+            child: Container(),
           );
         }
       },

@@ -75,7 +75,7 @@ class _AddTransactionPageState extends State<AddTransactionPage>
               AddTransactionConsumer(
                 formkey: formKey,
                 amount: amountController.text,
-                type: (selectedItem == "Pendapatan") ? 'income' : 'expense',
+                type: selectedItem,
                 notes: notesController.text,
               ),
             ],

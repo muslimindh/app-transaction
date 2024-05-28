@@ -18,9 +18,10 @@ class AddTransactionConsumer extends ConsumerWidget {
     return CustomButton(
       onTap: () {
         if (formkey.currentState!.validate()) {
+          String typeConv = type == "Pendapatan" ? 'income' : 'expense';
           Map<String, dynamic> data = {
             'amount': amount,
-            'type': type,
+            'type': typeConv,
             'category': notes,
           };
           ref.read(transactionProvider.notifier).createTransaction(ref, data);

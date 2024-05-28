@@ -19,9 +19,14 @@ class TransactionViewModel extends StateNotifier {
   }
 
   void createTransaction(WidgetRef ref, Map<String, dynamic> dataTransaction) {
+    debugPrint('Data being sent: $dataTransaction');
     ref.read(createTransactionProvider(dataTransaction).future).then(
       (result) {
         state = 'success';
+        Future.delayed(const Duration(seconds: 2), () {
+          ref.refresh(listDatatransactionProvider);
+          Get.back();
+        });
         debugPrint('$state');
       },
       onError: (error) {
@@ -34,6 +39,8 @@ class TransactionViewModel extends StateNotifier {
     ref.read(deleteTransactionProvider(dataTransaction).future).then(
       (result) {
         state = 'success';
+        ref.refresh(listDatatransactionProvider);
+        Get.back();
         debugPrint('$state');
       },
       onError: (error) {

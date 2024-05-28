@@ -9,25 +9,29 @@ class FloatingButtonConsumer extends ConsumerWidget with CustomMixin {
     return transactionAsyncValue.when(
       data: (transactions) {
         if (transactions.isNotEmpty) {
-          return InkWell(
-            onTap: () {
-              Get.to(() => const AddTransactionPage());
-            },
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12),
-              decoration: themeDecoration(color: CustomColor.theme),
-              child: const Text(
-                'Tambah Transaksi',
-                style: CustomFont.whiteFont12Semi,
-              ),
-            ),
-          );
+          return widgetButton();
         } else {
-          return Container();
+          return widgetButton();
         }
       },
       loading: () => Container(),
       error: (err, stack) => Container(),
+    );
+  }
+
+  Widget widgetButton() {
+    return InkWell(
+      onTap: () {
+        Get.to(() => const AddTransactionPage());
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12),
+        decoration: themeDecoration(color: CustomColor.theme),
+        child: const Text(
+          'Tambah Transaksi',
+          style: CustomFont.whiteFont12Semi,
+        ),
+      ),
     );
   }
 }
