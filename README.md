@@ -77,7 +77,7 @@ class TransactionViewModel extends StateNotifier with CustomMixin {
         state = 'success';
         Get.close(2);
         debugPrint('$state');
-        return ref.refresh(listDatatransactionProvider);
+        return ref.refresh(listDatatransactionProvider); // Berfungsi untuk update data dari server
       },
       onError: (error) {
         Get.close(1);
@@ -91,3 +91,29 @@ class TransactionViewModel extends StateNotifier with CustomMixin {
   }
 }
 ```
+
+# View: Create Transaction
+
+Fungsi ini bertujuan untuk membuat transaksi berdasarkan data yang diberikan oleh pengguna dan memeriksa ketersediaan koneksi internet sebelum melakukan proses.
+
+## Proses Pemanggilan
+
+```dart
+Map<String, dynamic> data = {
+  'amount': amount,
+  'type': type,
+  'category': category,
+};
+showLoaderOverlay(context: context); // Tampilan loading
+final isOnline = await Utility.instance.checkConnection();
+if (isOnline) {
+  ref.read(transactionProvider.notifier).createTransaction(context, ref, data);
+} else {
+  Get.close(1);
+  showCustomPopUp(
+    context: context,
+    time: 4,
+    title: 'Anda sedang offline. Pastikan terhubung dengan internet',
+    color: CustomColor.red,
+  );
+}
