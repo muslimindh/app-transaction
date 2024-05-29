@@ -6,10 +6,11 @@ class ListTransactionConsumer extends ConsumerWidget with CustomMixin {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final transactionAsyncValue = ref.watch(listDatatransactionProvider);
-    return widgetTransaction(ref, transactionAsyncValue);
+    return widgetTransaction(context, ref, transactionAsyncValue);
   }
 
   Widget widgetTransaction(
+    context,
     WidgetRef ref,
     AsyncValue<List<DataTransaction>> transactionAsyncValue,
   ) {
@@ -30,8 +31,20 @@ class ListTransactionConsumer extends ConsumerWidget with CustomMixin {
       ),
       error: (err, stack) => Expanded(
         child: widgetError(
-          onTap: () {
-            ref.refresh(listDatatransactionProvider);
+          onTap: () async {
+            final isOnline = await Utility.instance.checkConnection();
+            if (isOnline) {
+              ref.refresh(listDatatransactionProvider);
+            } else {
+              Get.close(1);
+              showCustomPopUp(
+                context: context,
+                time: 4,
+                title:
+                    'Anda sedang offline. Pastikan terhubung dengan internet',
+                color: CustomColor.red,
+              );
+            }
           },
         ),
       ),

@@ -44,4 +44,76 @@ mixin CustomMixin {
       elevation: 0,
     );
   }
+
+  showCustomPopUp({
+    required BuildContext context,
+    required String title,
+    required Color color,
+    int? time,
+  }) {
+    int timer = time ?? 3;
+    Alert(
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 12),
+      style: AlertStyle(
+        descPadding: EdgeInsets.zero,
+        titlePadding: EdgeInsets.zero,
+        buttonAreaPadding: EdgeInsets.zero,
+        alertBorder: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: const BorderSide(color: Colors.transparent),
+        ),
+        backgroundColor: color,
+        animationType: AnimationType.fromBottom,
+        alertAlignment: Alignment.bottomCenter,
+        isCloseButton: false,
+        alertElevation: 0,
+        overlayColor: Colors.transparent,
+      ),
+      context: context,
+      buttons: [],
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: CustomFont.whiteFont12,
+          ),
+          StreamBuilder(
+            stream: Stream.periodic(
+              const Duration(seconds: 1),
+            ),
+            builder: (context, snapshot) {
+              timer--;
+              if (timer == 0) {
+                Navigator.of(context, rootNavigator: true).maybePop();
+              }
+              return const SizedBox();
+            },
+          ),
+        ],
+      ),
+    ).show();
+  }
+
+  showLoaderOverlay({required BuildContext context}) {
+    return showDialog(
+      barrierDismissible: false,
+      builder: (_) {
+        return const PopScope(
+          // canPop: false,
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: Center(
+              child: CircularProgressIndicator(
+                color: CustomColor.theme,
+              ),
+            ),
+          ),
+        );
+      },
+      context: context,
+    );
+  }
 }

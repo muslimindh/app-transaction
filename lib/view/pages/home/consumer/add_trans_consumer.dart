@@ -1,6 +1,6 @@
 part of '../../../views.dart';
 
-class AddTransactionConsumer extends ConsumerWidget {
+class AddTransactionConsumer extends ConsumerWidget with CustomMixin {
   const AddTransactionConsumer({
     super.key,
     required this.amount,
@@ -16,7 +16,7 @@ class AddTransactionConsumer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return CustomButton(
-      onTap: () {
+      onTap: () async {
         if (formkey.currentState!.validate()) {
           String typeConv = type == "Pendapatan" ? 'income' : 'expense';
           Map<String, dynamic> data = {
@@ -24,7 +24,19 @@ class AddTransactionConsumer extends ConsumerWidget {
             'type': typeConv,
             'category': notes.text,
           };
-          ref.read(transactionProvider.notifier).createTransaction(ref, data);
+          showLoaderOverlay(context: context);
+          final isOnline = await Utility.instance.checkConnection();
+          if (isOnline) {
+            ref.read(transactionProvider.notifier).createTransaction(ref, data);
+          } else {
+            Get.close(1);
+            showCustomPopUp(
+              context: context,
+              time: 4,
+              title: 'Anda sedang offline. Pastikan terhubung dengan internet',
+              color: CustomColor.red,
+            );
+          }
         }
       },
       child: const Center(

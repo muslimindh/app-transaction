@@ -25,12 +25,12 @@ class TransactionViewModel extends StateNotifier {
         state = 'success';
         Future.delayed(const Duration(seconds: 2), () {
           ref.refresh(listDatatransactionProvider);
-          Get.back();
+          Get.close(2);
         });
         debugPrint('$state');
       },
       onError: (error) {
-        state = '$error';
+        Get.close(1);
       },
     );
   }
@@ -40,11 +40,11 @@ class TransactionViewModel extends StateNotifier {
       (result) {
         state = 'success';
         ref.refresh(listDatatransactionProvider);
-        Get.back();
+        Get.close(2);
         debugPrint('$state');
       },
       onError: (error) {
-        state = '$error';
+        Get.close(1);
       },
     );
   }

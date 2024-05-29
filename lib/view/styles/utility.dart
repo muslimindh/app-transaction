@@ -7,4 +7,11 @@ class Utility {
   Utility._();
   final moneyFormat =
       NumberFormat.currency(locale: 'id', decimalDigits: 0, symbol: 'Rp ');
+
+  Future<bool> checkConnection() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    return (connectivityResult.contains(ConnectivityResult.none))
+        ? false
+        : true;
+  }
 }

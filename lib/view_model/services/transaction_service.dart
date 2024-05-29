@@ -64,7 +64,6 @@ final deleteTransactionProvider =
       throw Exception('Terjadi kesalahan server [${resp.statusCode}]');
     }
   } catch (e) {
-    debugPrint('$e');
     throw Exception('Terjadi kesalahan server');
   }
 });
