@@ -92,11 +92,11 @@ class TransactionViewModel extends StateNotifier with CustomMixin {
 }
 ```
 
-# View: Create Transaction
+## View: Create Transaction
 
 Fungsi ini bertujuan untuk membuat transaksi berdasarkan data yang diberikan oleh pengguna dan memeriksa ketersediaan koneksi internet sebelum melakukan proses.
 
-## Proses Pemanggilan
+#### Proses Pemanggilan
 
 ```dart
 Map<String, dynamic> data = {
@@ -117,3 +117,82 @@ if (isOnline) {
     color: CustomColor.red,
   );
 }
+```
+
+## Provider: Delete Transaction
+
+Provider `deleteTransactionProvider` menggunakan `FutureProvider.family` untuk memfasilitasi penghapusan transaksi berdasarkan ID yang diberikan.
+
+```dart
+final deleteTransactionProvider =
+    FutureProvider.family<AsyncValue<void>, int>((ref, transactionData) async {
+  try {
+    final Response resp = await net.request(
+      '/transactions/delete/$transactionData',
+      requestMethod: 'delete',
+    );
+    if (resp.statusCode == 200) {
+      return const AsyncData<void>(null);
+    } else {
+      throw Exception('Terjadi kesalahan server [${resp.statusCode}]');
+    }
+  } catch (e) {
+    throw Exception('Terjadi kesalahan server');
+  }
+});
+```
+
+## View Model: Delete Transaction
+
+`TransactionViewModel` mengextend `StateNotifier`. ViewModel ini mengatur proses penghapusan transaksi, termasuk pemanggilan provider dan pengelolaan respons. ViewModel ini bertanggung jawab untuk mengirimkan data ID yang diterima ke `deleteTransaction` dan menangani hasilnya.
+
+```dart
+class TransactionViewModel extends StateNotifier with CustomMixin {
+  TransactionViewModel(super.state);
+
+  void deleteTransaction(
+    BuildContext context,
+    WidgetRef ref,
+    int dataTransaction,
+  ) {
+    ref.read(deleteTransactionProvider(dataTransaction).future).then(
+      (result) {
+        state = 'success';
+        Get.close(2);
+        debugPrint('$state');
+        return ref.refresh(listDatatransactionProvider); // Berfungsi untuk update data dari server
+      },
+      onError: (error) {
+        Get.close(1);
+        showCustomPopUp(
+          context: context,
+          title: 'Terjadi kesalahan server',
+          color: CustomColor.red,
+        );
+      },
+    );
+  }
+}
+```
+
+## View: Delete Transaction
+
+Fungsi ini bertujuan untuk menghapus transaksi berdasarkan transaksi yang dipilih oleh pengguna (mengambil ID transaksi) dan memeriksa ketersediaan koneksi internet sebelum melakukan proses.
+
+#### Proses Pemanggilan
+
+```dart
+showLoaderOverlay(context: context); // Tampilan loading
+final isOnline = await Utility.instance.checkConnection();
+if (isOnline) {
+    ref.read(transactionProvider.notifier).deleteTransaction(context, ref, idTransaction);
+} else {
+    Get.close(1);
+    showCustomPopUp(
+        context: context,
+        time: 4,
+        title: 'Anda sedang offline. Pastikan terhubung dengan internet',
+        color: CustomColor.red,
+    );
+}
+```
