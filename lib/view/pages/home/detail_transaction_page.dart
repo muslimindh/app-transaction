@@ -42,47 +42,31 @@ class DetailTransactionPage extends StatelessWidget with CustomMixin {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              if (type == "income") ...[
-                Flexible(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: CustomColor.theme,
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: const Text(
-                      'Pendapatan',
-                      style: CustomFont.whiteFont10,
-                    ),
-                  ),
-                ),
-              ] else ...[
-                Flexible(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: CustomColor.red,
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: const Text(
-                      'Pengeluaran',
-                      style: CustomFont.whiteFont10,
-                    ),
-                  ),
-                ),
-              ],
-              Expanded(
-                child: Text(
-                  Utility.instance.diffDate(date: DateTime.parse(createdAt!)),
-                  textAlign: TextAlign.end,
-                  style: CustomFont.greyFont10,
-                ),
+          if (type == "income") ...[
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4),
+              decoration: BoxDecoration(
+                color: CustomColor.theme,
+                borderRadius: BorderRadius.circular(6),
               ),
-            ],
-          ),
+              child: const Text(
+                'Pendapatan',
+                style: CustomFont.whiteFont10,
+              ),
+            ),
+          ] else ...[
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4),
+              decoration: BoxDecoration(
+                color: CustomColor.red,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: const Text(
+                'Pengeluaran',
+                style: CustomFont.whiteFont10,
+              ),
+            ),
+          ],
           const SizedBox(height: 12),
           const Text(
             'Jumlah',
