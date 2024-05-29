@@ -36,8 +36,8 @@ class HomePage extends StatelessWidget with CustomMixin {
                   style: CustomFont.blackFont12,
                 ),
                 SizedBox(height: 2.h),
-                const Text(
-                  'Selamat siang',
+                Text(
+                  getGreeting(),
                   style: CustomFont.greyFont12,
                 ),
               ],

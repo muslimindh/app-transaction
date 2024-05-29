@@ -45,6 +45,19 @@ mixin CustomMixin {
     );
   }
 
+  String getGreeting() {
+    DateTime now = DateTime.now();
+    int hour = now.hour;
+
+    if (hour < 12) {
+      return 'Selamat Pagi';
+    } else if (hour < 18) {
+      return 'Selamat Siang';
+    } else {
+      return 'Selamat Malam';
+    }
+  }
+
   showCustomPopUp({
     required BuildContext context,
     required String title,

@@ -12,14 +12,16 @@ class _OnBoardPageState extends State<OnBoardPage> {
   final PageController _controller = PageController();
   List<Widget> pages = [
     const SlidePage(
+      imgPath: 'income.png',
       title: 'Lacak Pendapatan',
       subTitle:
-          'Setelah proses onboarding selesai, pengguna diminta untuk menetapkan master location. Namun, pengguna dapat mengubah master location tersebut melalui menu dashboard.',
+          'Aplikasi ini memungkinkan pengguna untuk menambahkan dan melacak catatan pendapatan dengan mudah dan efisien',
     ),
     const SlidePage(
+      imgPath: 'expense.png',
       title: 'Lacak Pengeluaran',
       subTitle:
-          'Pastikan berada dalam jarak maksimal 50 meter dari master location untuk mulai melakukan presensi masuk. Jika jarak lebih dari 50 meter maka tidak dapat melakukan presensi.',
+          'Aplikasi ini memungkinkan pengguna untuk menambahkan dan melacak catatan pengeluaran dengan mudah dan efisien',
     ),
   ];
 
