@@ -66,6 +66,7 @@ class ListTransactionConsumer extends ConsumerWidget with CustomMixin {
                 date: transactions[index].parseDate(),
                 notes: transactions[index].category,
                 type: transactions[index].type,
+                createdAt: transactions[index].createdAt,
               ),
             );
           },

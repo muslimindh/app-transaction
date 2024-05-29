@@ -8,12 +8,14 @@ class DetailTransactionPage extends StatelessWidget with CustomMixin {
     this.notes,
     this.date,
     this.type,
+    this.createdAt,
   });
   final int id;
   final String? type;
   final int? amount;
   final String? notes;
   final String? date;
+  final String? createdAt;
 
   @override
   Widget build(BuildContext context) {
@@ -72,9 +74,9 @@ class DetailTransactionPage extends StatelessWidget with CustomMixin {
                   ),
                 ),
               ],
-              const Expanded(
+              Expanded(
                 child: Text(
-                  '2 jam yang lalu',
+                  Utility.instance.diffDate(date: DateTime.parse(createdAt!)),
                   textAlign: TextAlign.end,
                   style: CustomFont.greyFont10,
                 ),

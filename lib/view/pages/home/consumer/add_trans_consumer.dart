@@ -22,7 +22,7 @@ class AddTransactionConsumer extends ConsumerWidget with CustomMixin {
           Map<String, dynamic> data = {
             'amount': amount.text,
             'type': typeConv,
-            'category': notes.text,
+            'category': notes.text.toTitleCase(),
           };
           showLoaderOverlay(context: context);
           final isOnline = await Utility.instance.checkConnection();
