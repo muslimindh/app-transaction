@@ -1,6 +1,6 @@
 # Aplikasi Pencatatan Transaksi
 
-Aplikasi mobile ini dirancang untuk membantu pengguna dalam mencatat transaksi keuangan mereka seperti pendapatan dan pengeluaran.
+Aplikasi mobile ini dirancang untuk membantu pengguna dalam mencatat transaksi keuangan seperti pendapatan dan pengeluaran.
 
 ## Fitur Utama
 
@@ -12,7 +12,7 @@ Aplikasi mobile ini dirancang untuk membantu pengguna dalam mencatat transaksi k
 
 <img src="https://github.com/muslimindh/app-transaction/blob/main/assets/images/github/flutter.png" height="100" alt="Flutter" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/muslimindh/app-transaction/blob/main/assets/images/github/laravel.png" height="100" alt="Laravel" />
 
-- **Mobile:** Flutter (version 3.19.3)
+- **Mobile:** Flutter (version 3.19.3) `state management Riverpod`
 - **Backend:** Laravel API (https://github.com/muslimindh/test-muslimin.git)
 
 ## Instalasi
