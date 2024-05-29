@@ -3,7 +3,7 @@ part of '../viewmodels.dart';
 final transactionProvider =
     StateNotifierProvider((ref) => TransactionViewModel(ref));
 
-class TransactionViewModel extends StateNotifier {
+class TransactionViewModel extends StateNotifier with CustomMixin {
   TransactionViewModel(super.state);
 
   void loadTransactions(WidgetRef ref) {
@@ -18,33 +18,49 @@ class TransactionViewModel extends StateNotifier {
         );
   }
 
-  void createTransaction(WidgetRef ref, Map<String, dynamic> dataTransaction) {
+  void createTransaction(
+    BuildContext context,
+    WidgetRef ref,
+    Map<String, dynamic> dataTransaction,
+  ) {
     debugPrint('Data being sent: $dataTransaction');
     ref.read(createTransactionProvider(dataTransaction).future).then(
       (result) {
         state = 'success';
-        Future.delayed(const Duration(seconds: 2), () {
-          ref.refresh(listDatatransactionProvider);
-          Get.close(2);
-        });
+        Get.close(2);
         debugPrint('$state');
+        return ref.refresh(listDatatransactionProvider);
       },
       onError: (error) {
         Get.close(1);
+        showCustomPopUp(
+          context: context,
+          title: 'Terjadi kesalahan server',
+          color: CustomColor.red,
+        );
       },
     );
   }
 
-  void deleteTransaction(WidgetRef ref, int dataTransaction) {
+  void deleteTransaction(
+    BuildContext context,
+    WidgetRef ref,
+    int dataTransaction,
+  ) {
     ref.read(deleteTransactionProvider(dataTransaction).future).then(
       (result) {
         state = 'success';
-        ref.refresh(listDatatransactionProvider);
         Get.close(2);
         debugPrint('$state');
+        return ref.refresh(listDatatransactionProvider);
       },
       onError: (error) {
         Get.close(1);
+        showCustomPopUp(
+          context: context,
+          title: 'Terjadi kesalahan server',
+          color: CustomColor.red,
+        );
       },
     );
   }

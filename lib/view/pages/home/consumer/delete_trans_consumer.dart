@@ -14,7 +14,7 @@ class DeleteTransactionConsumer extends ConsumerWidget with CustomMixin {
         if (isOnline) {
           ref
               .read(transactionProvider.notifier)
-              .deleteTransaction(ref, idTransaction);
+              .deleteTransaction(context, ref, idTransaction);
         } else {
           Get.close(1);
           showCustomPopUp(

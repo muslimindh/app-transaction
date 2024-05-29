@@ -27,7 +27,9 @@ class AddTransactionConsumer extends ConsumerWidget with CustomMixin {
           showLoaderOverlay(context: context);
           final isOnline = await Utility.instance.checkConnection();
           if (isOnline) {
-            ref.read(transactionProvider.notifier).createTransaction(ref, data);
+            ref
+                .read(transactionProvider.notifier)
+                .createTransaction(context, ref, data);
           } else {
             Get.close(1);
             showCustomPopUp(
